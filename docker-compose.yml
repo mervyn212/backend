@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/backenddemo
+      SPRING_DATASOURCE_USERNAME: backenduser
+      SPRING_DATASOURCE_PASSWORD: backendpass
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: backenddemo
+      POSTGRES_USER: backenduser
+      POSTGRES_PASSWORD: backendpass
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - "6379:6379"
